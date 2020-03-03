@@ -14,7 +14,7 @@ description:  Islamic Prayer Times Today, Salat Timings, Namaz ...
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -29,6 +29,8 @@ dependencies:
   flutter_adhan: ^0.0.3
   table_calendar: ^2.2.2
   flutter_screenutil: ^1.0.2
+  flutter_qiblah: ^1.0.2
+  flutter_svg: ^0.17.1
 
 
 
@@ -67,10 +69,17 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
+  assets:
+    - assets/image/compass/compass.svg
+    - assets/image/compass/needle.svg
+    - assets/image/user/man.png
   fonts:
     - family: AbrilFatface
       fonts:
         - asset: assets/fonts/AgaMashqV2Mshq-3mdX.ttf
+    - family: MyIcons
+      fonts:
+        - asset: assets/icons/iconfont.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

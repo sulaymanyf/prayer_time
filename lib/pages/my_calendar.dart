@@ -7,9 +7,9 @@ import 'package:prayer_imes/model/namaz_time.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 final Map<DateTime, List> _holidays = {
-  DateTime(2019, 1, 1): ['New Year\'s Day'],
-  DateTime(2019, 1, 6): ['Epiphany'],
-  DateTime(2019, 2, 14): ['Valentine\'s Day'],
+  DateTime(2020,3, 1): ['New Year\'s Day'],
+  DateTime(2020, 3, 6): ['Epiphany'],
+  DateTime(2020, 3, 14): ['Valentine\'s Day'],
   DateTime(2019, 4, 21): ['Easter Sunday'],
   DateTime(2019, 4, 22): ['Easter Monday'],
 };
@@ -32,7 +32,7 @@ class _MyCalendarState extends State<MyCalendar> with TickerProviderStateMixin {
         .getNamazTime(DateFormat('yyyy-MM-dd').format(dateTime));
     if (namaz == null) {
       await namazBdUtil.insert(new NamazTime(
-          DateFormat('yyyy-MM-dd').format(dateTime), "user", 0, 0, 0, 0, 0));
+          DateFormat('yyyy-MM-dd').format(dateTime), "user", 0, 0, 0, 0, 0,0,0));
       namaz = await namazBdUtil
           .getNamazTime(DateFormat('yyyy-MM-dd').format(dateTime));
       //切记用完就close
@@ -72,8 +72,12 @@ class _MyCalendarState extends State<MyCalendar> with TickerProviderStateMixin {
 
   void _onDaySelected(DateTime day, List events) {
     print('CALLBACK: _onDaySelected');
+    print(_events.toString());
+    print(day);
+    print(_events[day]);
     setState(() {
-      _selectedEvents = events;
+      _selectedEvents = _events[day] ?? [];
+//      _selectedEvents = events;
     });
   }
 
@@ -201,14 +205,11 @@ class _MyCalendarState extends State<MyCalendar> with TickerProviderStateMixin {
   Widget _buildTableCalendar() {
     return TableCalendar(
       calendarController: _calendarController,
-      events: _events,
+//      events: _events,
       holidays: _holidays,
       startingDayOfWeek: StartingDayOfWeek.monday,
       calendarStyle: CalendarStyle(
-        selectedColor: Colors.deepOrange[400],
-        todayColor: Colors.deepOrange[200],
-        markersColor: Colors.brown[700],
-        outsideDaysVisible: false,
+        outsideDaysVisible: true,
       ),
       headerStyle: HeaderStyle(
         formatButtonTextStyle:
@@ -289,7 +290,6 @@ class _MyCalendarState extends State<MyCalendar> with TickerProviderStateMixin {
     return list;
 //    });
   }
-
   Future<void> setData(DateTime _selectedDay) async {
     Map<DateTime, List> events = {};
     for (int i = 0; i < 31; i++) {
@@ -302,10 +302,13 @@ class _MyCalendarState extends State<MyCalendar> with TickerProviderStateMixin {
       print(getNameVoData(_selectedDay.subtract(Duration(days: i))).toString());
 //      _events[_selectedDay.subtract(Duration(days: i))]=getNameVoData(_selectedDay.subtract(Duration(days: i)));  [namaz?.fajr,namaz?.dhur,namaz?.asr,namaz?.maghrib,namaz?.isha];
       events[_selectedDay.add(Duration(days: i))] =
+//      events[_selectedDay.add(Duration(days: i))] =
           await getNameVoData(_selectedDay.add(Duration(days: i)));
     }
     print(_selectedDay.subtract(Duration(days: 0)));
     print(_selectedDay);
+
+    DateFormat('yyyy-MM-dd').format(DateTime.now());
 
     setState(() {
       _events = events;

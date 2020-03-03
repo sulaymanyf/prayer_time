@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:prayer_imes/pages/compass.dart';
 import 'package:prayer_imes/pages/my_calendar.dart';
 
 class ProfileDetail extends StatelessWidget {
@@ -12,17 +13,6 @@ class ProfileDetail extends StatelessWidget {
           child: new Container(
               child: new Column(
             children: <Widget>[
-              Row(
-                children: <Widget>[
-                  new Text(
-                    "My Info",
-                    style: new TextStyle(
-                      fontSize: 30.0,
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ],
-              ),
               new SizedBox(
                 height: 10.0,
               ),
@@ -32,21 +22,18 @@ class ProfileDetail extends StatelessWidget {
                       child: Padding(
                     padding: const EdgeInsets.only(right: 5.0),
                     child: new Container(
+                      width: 100.0,
                       height: 100.0,
-                      decoration: new BoxDecoration(
-                          borderRadius: new BorderRadius.circular(5.0),
-                          color: Color(0xFFFD7384)),
-                      child: new Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          new Icon(
-                            Icons.drive_eta,
-                            color: Colors.white,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          border: Border.all(
+                            color: Colors.red
                           ),
-                          new Text("Motor",
-                              style: new TextStyle(color: Colors.white))
-                        ],
-                      ),
+                          borderRadius: new BorderRadius.circular(5.0),
+                          image: DecorationImage(
+                            image: AssetImage('assets/image/user/man.png'),
+                          ),
+                          color: Color(0xFFFD7384)),
                     ),
                   )),
                   new Expanded(
@@ -114,29 +101,38 @@ class ProfileDetail extends StatelessWidget {
                       children: <Widget>[
                         Expanded(
                           child: Padding(
-                            padding:
-                                const EdgeInsets.only(left: 2.5, bottom: 2.5),
-                            child: new Container(
-                              decoration: new BoxDecoration(
-                                  color: Color(0XFF53CEDB),
-                                  borderRadius: new BorderRadius.circular(5.0)),
-                              child: new Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 8.0),
-                                    child: new Icon(
-                                      Icons.account_balance,
-                                      color: Colors.white,
-                                    ),
+                              padding:
+                                  const EdgeInsets.only(left: 2.5, bottom: 2.5),
+                              child: GestureDetector(
+                                onTap: () => {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => Compass()))
+                                },
+                                child: new Container(
+                                  decoration: new BoxDecoration(
+                                      color: Color(0XFF53CEDB),
+                                      borderRadius:
+                                          new BorderRadius.circular(5.0)),
+                                  child: new Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 8.0),
+                                        child: new Icon(IconData(0xe603,
+                                            fontFamily: 'MyIcons')),
+                                      ),
+                                      new Text('Mecca',
+                                          style: new TextStyle(
+                                              color: Colors.white))
+                                    ],
                                   ),
-                                  new Text('Properties',
-                                      style: new TextStyle(color: Colors.white))
-                                ],
-                              ),
-                            ),
-                          ),
+                                ),
+                              )),
                         ),
+                        // Compass
                         Expanded(
                           child: Padding(
                               padding:
@@ -246,10 +242,10 @@ class ProfileDetail extends StatelessWidget {
                 child: ListTile(
                   title: Text("setting"),
                   leading: new Icon(
-                      Icons.settings,
-                       color: Colors.black,
+                    Icons.settings,
+                    color: Colors.black,
                   ),
-                  onTap: ()=>{},
+                  onTap: () => {},
                 ),
               ),
               new SizedBox(

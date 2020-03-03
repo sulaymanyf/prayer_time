@@ -13,6 +13,8 @@ final String columnDhur = 'dhur';
 final String columnAsr = 'asr';
 final String columnMaghrib = 'maghrib';
 final String columnIsha = 'isha';
+final String columnDuha = 'duha';
+final String columnTahajjud = 'tahajjud';
 
 class AppDatabase {
   static final AppDatabase _appDatabase = new AppDatabase._internal();
@@ -56,7 +58,7 @@ class AppDatabase {
 
   Future _createUserTable(Database db) {
     return db.execute(
-        ('''CREATE TABLE $tableUser ($columnId INTEGER PRIMARY KEY autoincrement, $columnName TEXT, $columnTime TEXT, $columnFajr INTEGER, $columnDhur INTEGER, $columnAsr INTEGER, $columnMaghrib INTEGER, $columnIsha INTEGER )''')
+        ('''CREATE TABLE $tableUser ($columnId INTEGER PRIMARY KEY autoincrement, $columnName TEXT, $columnTime TEXT, $columnFajr INTEGER, $columnDhur INTEGER, $columnAsr INTEGER, $columnMaghrib INTEGER, $columnIsha INTEGER ,$columnDuha INTEGER,$columnTahajjud INTEGER )''')
     );
   }
 

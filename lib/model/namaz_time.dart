@@ -13,6 +13,8 @@ class NamazTime {
   int asr;
   int maghrib;
   int isha;
+  int duha;
+  int tahajjud;
 
 
   NamazTime(this.time,
@@ -21,6 +23,8 @@ class NamazTime {
       this.dhur,
       this.asr,
       this.maghrib,
+      this.duha,
+      this.tahajjud,
       this.isha);
 
   NamazTime.fromJson(Map<String, dynamic> json) {
@@ -30,6 +34,8 @@ class NamazTime {
     asr = json['asr'];
     maghrib = json['maghrib'];
     id = json['id'];
+    duha = json['duha'];
+    tahajjud = json['tahajjud'];
     name = json['name'];
     isha = json['isha'];
   }
@@ -44,6 +50,8 @@ class NamazTime {
     data['id'] = this.id;
     data['name'] = this.name;
     data['isha'] = this.isha;
+    data['tahajjud'] = this.tahajjud;
+    data['duha'] = this.duha;
     return data;
   }
 }
