@@ -33,7 +33,7 @@ class ProfileDetail extends StatelessWidget {
                           image: DecorationImage(
                             image: AssetImage('assets/image/user/man.png'),
                           ),
-                          color: Color(0xFFFD7384)),
+                      ),
                     ),
                   )),
                   new Expanded(

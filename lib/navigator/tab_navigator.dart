@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:prayer_imes/pages/current_time_page.dart';
-import 'package:prayer_imes/pages/paryer_info_page.dart';
+import 'package:prayer_imes/pages/info_page.dart';
 import 'package:prayer_imes/pages/profile_detail_page.dart';
 
 class TabNavigator extends StatefulWidget {
@@ -24,7 +24,7 @@ class _TabNavigatorState extends State<TabNavigator> {
     return Scaffold(
       body: PageView(
         controller: _pageController,
-        children: <Widget>[CurrentTimePage(), PrayerInfoPage(),ProfileDetail() ],
+        children: <Widget>[CurrentTimePage(), InfoPage(), ProfileDetail()],
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,

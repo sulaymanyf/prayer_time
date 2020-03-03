@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_qiblah/flutter_qiblah.dart';
 
-import 'companies/loading_indicator.dart';
-import 'companies/qiblah_compass.dart';
+import 'compoments/loading_indicator.dart';
+import 'compoments/qiblah_compass.dart';
 
 class Compass extends StatefulWidget {
   @override
