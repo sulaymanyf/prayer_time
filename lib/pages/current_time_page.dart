@@ -2,16 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_adhan/flutter_adhan.dart';
 import 'package:flutter_adhan/time_util/paryer_times.dart';
 import 'package:intl/intl.dart';
+import 'package:prayer_imes/generated/i18n.dart';
 import 'package:prayer_imes/model/namaz_db_util.dart';
 import 'package:prayer_imes/model/namaz_time.dart';
 import 'package:prayer_imes/model/prayer_time.dart';
 import 'package:prayer_imes/prayer_time/clock.dart';
+import '../change_local_izations.dart';
 
-class CurrentTimePage extends StatefulWidget {
+class CurrentTimePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ChangeLocalizationsStatus(
+      child: CurrentTimDetailPage(),
+    );
+  }
+}
+
+class CurrentTimDetailPage extends StatefulWidget {
   _CurrentTimePageState createState() => _CurrentTimePageState();
 }
 
-class _CurrentTimePageState extends State<CurrentTimePage> {
+class _CurrentTimePageState extends State<CurrentTimDetailPage> {
   NamazBdUtil namazBdUtil = NamazBdUtil();
 
   final double _smallFontSize = 12;
@@ -85,12 +96,12 @@ class _CurrentTimePageState extends State<CurrentTimePage> {
             prayerTimes.fajr.hour,
             prayerTimes.fajr.minute))) {}
 
-        return DateTime(
-            prayerTimes.fajr.year,
-            prayerTimes.fajr.month,
-            prayerTimes.fajr.day + 1,
-            prayerTimes.fajr.hour,
-            prayerTimes.fajr.minute);
+    return DateTime(
+        prayerTimes.fajr.year,
+        prayerTimes.fajr.month,
+        prayerTimes.fajr.day + 1,
+        prayerTimes.fajr.hour,
+        prayerTimes.fajr.minute);
   }
 
   diffNexiTime() {
@@ -101,7 +112,7 @@ class _CurrentTimePageState extends State<CurrentTimePage> {
     print(inMinutes);
     int hour = (inMinutes / 60).floor();
     int minuttes = inMinutes - hour * 60;
-    diffTime = hour.toString() + "h" + minuttes.toString()+"m";
+    diffTime = hour.toString() + "h" + minuttes.toString() + "m";
     print("diffTime:$diffTime");
     return atSameMomentAs;
   }
@@ -117,7 +128,7 @@ class _CurrentTimePageState extends State<CurrentTimePage> {
     diffNexiTime();
     if (namaz == null) {
       await namazBdUtil
-          .insert(new NamazTime(current_Date(), "user", 0, 0, 0, 0, 0,0,0));
+          .insert(new NamazTime(current_Date(), "user", 0, 0, 0, 0, 0, 0, 0));
       namaz = await namazBdUtil.getNamazTime(current_Date());
       //切记用完就close
     }
@@ -140,7 +151,6 @@ class _CurrentTimePageState extends State<CurrentTimePage> {
     return Scaffold(
       body: Stack(
         children: <Widget>[
-
           Container(
 //        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 25),
               alignment: Alignment.topCenter,
@@ -163,7 +173,7 @@ class _CurrentTimePageState extends State<CurrentTimePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            "Current Time",
+                            S.of(context).current_time,
                             style: TextStyle(
                                 color: Color(0xffff0863),
                                 fontSize: 12,
@@ -183,7 +193,7 @@ class _CurrentTimePageState extends State<CurrentTimePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            "Current Prayer Time",
+                            S.of(context).current_prayer_time,
                             style: TextStyle(
                                 color: Color(0xffff0863),
                                 fontSize: 12,
@@ -193,8 +203,7 @@ class _CurrentTimePageState extends State<CurrentTimePage> {
                           Text(
                             nextPrayerTime == null
                                 ? ''
-                                : DateFormat('HH:mm a')
-                                .format(nextPrayerTime),
+                                : DateFormat('HH:mm a').format(nextPrayerTime),
                             style: TextStyle(
                                 color: Color(0xff2d386b),
                                 fontSize: 30,
@@ -209,12 +218,14 @@ class _CurrentTimePageState extends State<CurrentTimePage> {
                     children: <Widget>[
                       ListTile(
                         title: Text("Salah(ٱلصَّلَاة‎)"),
-                        subtitle: Text("Sunrise(‏طلوع الشمس من مغربها‏)  "+prayerTime?.sunrise.toString(),style: TextStyle(
-                          fontSize: 12
-                        ), ),
+                        subtitle: Text(
+                          "Sunrise(‏طلوع الشمس من مغربها‏)  " +
+                              prayerTime?.sunrise.toString(),
+                          style: TextStyle(fontSize: 12),
+                        ),
                         trailing: Padding(
-                          padding: new EdgeInsets.fromLTRB(
-                              10.0, 10.0, 10.0, 10.0),
+                          padding:
+                              new EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
                           child: Text(
                             diffTime == null ? '' : diffTime,
                             style: TextStyle(
@@ -226,12 +237,11 @@ class _CurrentTimePageState extends State<CurrentTimePage> {
                       ),
                       Divider(),
                       GestureDetector(
-                        onDoubleTap: ()=>doubleTouchSave("Fajr"),
-                        child:  ListTile(
+                        onDoubleTap: () => doubleTouchSave("Fajr"),
+                        child: ListTile(
                           title: Text("Fajr(فجر)"),
-                          subtitle: Text(prayerTime?.fajr == null
-                              ? ''
-                              : prayerTime?.fajr),
+                          subtitle: Text(
+                              prayerTime?.fajr == null ? '' : prayerTime?.fajr),
                           trailing: new Icon(
                             // 新增代码开始 ...
                             namazTime?.fajr == 0
@@ -239,15 +249,16 @@ class _CurrentTimePageState extends State<CurrentTimePage> {
                                 : Icons.favorite,
                             color: getColor(namazTime?.fajr),
                           ),
-                          leading: Icon(IconData(0xe628,
-                              fontFamily: 'MyIcons'),color: Colors.blue,),
+                          leading: Icon(
+                            IconData(0xe628, fontFamily: 'MyIcons'),
+                            color: Colors.blue,
+                          ),
                           onLongPress: () => longTouchSave("Fajr"),
                           onTap: () => touchSave("Fajr"),
                         ),
                       ),
-
                       GestureDetector(
-                        onDoubleTap: ()=>doubleTouchSave("Duha"),
+                        onDoubleTap: () => doubleTouchSave("Duha"),
                         child: ListTile(
                           title: Text("Duha(الضحى)"),
                           subtitle: Text(prayerTime?.dhuhr == null
@@ -260,13 +271,14 @@ class _CurrentTimePageState extends State<CurrentTimePage> {
                                 : Icons.favorite,
                             color: getColor(namazTime?.dhur),
                           ),
-                          leading: Icon(Icons.wb_sunny,color: Colors.amberAccent),
+                          leading:
+                              Icon(Icons.wb_sunny, color: Colors.amberAccent),
                           onLongPress: () => longTouchSave("Duha"),
                           onTap: () => touchSave("Duha"),
                         ),
                       ),
                       GestureDetector(
-                        onDoubleTap: ()=>doubleTouchSave("Dhur"),
+                        onDoubleTap: () => doubleTouchSave("Dhur"),
                         child: ListTile(
                           title: Text("Dhur(ظهر)"),
                           subtitle: Text(prayerTime?.dhuhr == null
@@ -279,31 +291,31 @@ class _CurrentTimePageState extends State<CurrentTimePage> {
                                 : Icons.favorite,
                             color: getColor(namazTime?.dhur),
                           ),
-                          leading: Icon(Icons.wb_sunny,color: Colors.yellow),
+                          leading: Icon(Icons.wb_sunny, color: Colors.yellow),
                           onLongPress: () => longTouchSave("Dhur"),
                           onTap: () => touchSave("Dhur"),
                         ),
                       ),
                       GestureDetector(
-                        onDoubleTap: ()=>doubleTouchSave("Asr"),
+                        onDoubleTap: () => doubleTouchSave("Asr"),
                         child: ListTile(
-                           title: Text("Asr(عصر)"),
-                           subtitle: Text(
-                               prayerTime?.asr == null ? '' : prayerTime?.asr),
-                           trailing: new Icon(
-                             // 新增代码开始 ...
-                             namazTime?.asr == 0
-                                 ? Icons.favorite_border
-                                 : Icons.favorite,
-                             color: getColor(namazTime?.asr),
-                           ),
-                           leading: Icon(Icons.wb_sunny,color: Colors.amber),
-                           onTap: () => touchSave("Asr"),
-                           onLongPress: () => longTouchSave("Asr"),
-                         ),
+                          title: Text("Asr(عصر)"),
+                          subtitle: Text(
+                              prayerTime?.asr == null ? '' : prayerTime?.asr),
+                          trailing: new Icon(
+                            // 新增代码开始 ...
+                            namazTime?.asr == 0
+                                ? Icons.favorite_border
+                                : Icons.favorite,
+                            color: getColor(namazTime?.asr),
+                          ),
+                          leading: Icon(Icons.wb_sunny, color: Colors.amber),
+                          onTap: () => touchSave("Asr"),
+                          onLongPress: () => longTouchSave("Asr"),
+                        ),
                       ),
                       GestureDetector(
-                        onDoubleTap: ()=>doubleTouchSave("Maghrib"),
+                        onDoubleTap: () => doubleTouchSave("Maghrib"),
                         child: ListTile(
                           title: Text("Maghrib(مغرب)"),
                           subtitle: Text(prayerTime?.maghrib == null
@@ -316,50 +328,52 @@ class _CurrentTimePageState extends State<CurrentTimePage> {
                                 : Icons.favorite,
                             color: getColor(namazTime?.maghrib),
                           ),
-                          leading: Icon(IconData(0xe61b,
-                              fontFamily: 'MyIcons'),color: Colors.orangeAccent,),
+                          leading: Icon(
+                            IconData(0xe61b, fontFamily: 'MyIcons'),
+                            color: Colors.orangeAccent,
+                          ),
                           onTap: () => touchSave("Maghrib"),
                           onLongPress: () => longTouchSave("Maghrib"),
                         ),
                       ),
                       GestureDetector(
-                        onDoubleTap: ()=>doubleTouchSave("Isha"),
+                        onDoubleTap: () => doubleTouchSave("Isha"),
                         child: ListTile(
-                        title: Text("Isha(عشاء) "),
-                        subtitle: Text(prayerTime?.isha == null
-                            ? ''
-                            : prayerTime?.isha),
-                        trailing: new Icon(
-                          // 新增代码开始 ...
-                          namazTime?.isha == 0
-                              ? Icons.favorite_border
-                              : Icons.favorite,
-                          color: getColor(namazTime?.isha),
+                          title: Text("Isha(عشاء) "),
+                          subtitle: Text(
+                              prayerTime?.isha == null ? '' : prayerTime?.isha),
+                          trailing: new Icon(
+                            // 新增代码开始 ...
+                            namazTime?.isha == 0
+                                ? Icons.favorite_border
+                                : Icons.favorite,
+                            color: getColor(namazTime?.isha),
+                          ),
+                          leading: Icon(IconData(0xe60e, fontFamily: 'MyIcons'),
+                              color: Colors.indigoAccent),
+                          onLongPress: () => longTouchSave("Isha"),
+                          onTap: () => touchSave("Isha"),
                         ),
-                        leading: Icon(IconData(0xe60e,
-                            fontFamily: 'MyIcons'),color: Colors.indigoAccent),
-                        onLongPress: () => longTouchSave("Isha"),
-                        onTap: () => touchSave("Isha"),
-                      ),),
+                      ),
                       GestureDetector(
-                        onDoubleTap: ()=>doubleTouchSave("tahajjud"),
+                        onDoubleTap: () => doubleTouchSave("tahajjud"),
                         child: ListTile(
-                        title: Text("tahajjud(صَلاَةُ التَّهَجُّدِ)"),
-                        subtitle: Text(prayerTime?.isha == null
-                            ? ''
-                            : prayerTime?.isha),
-                        trailing: new Icon(
-                          // 新增代码开始 ...
-                          namazTime?.isha == 0
-                              ? Icons.favorite_border
-                              : Icons.favorite,
-                          color: getColor(namazTime?.isha),
+                          title: Text("tahajjud(صَلاَةُ التَّهَجُّدِ)"),
+                          subtitle: Text(
+                              prayerTime?.isha == null ? '' : prayerTime?.isha),
+                          trailing: new Icon(
+                            // 新增代码开始 ...
+                            namazTime?.isha == 0
+                                ? Icons.favorite_border
+                                : Icons.favorite,
+                            color: getColor(namazTime?.isha),
+                          ),
+                          leading: Icon(IconData(0xe60e, fontFamily: 'MyIcons'),
+                              color: Colors.indigo),
+                          onLongPress: () => longTouchSave("tahajjud"),
+                          onTap: () => touchSave("tahajjud"),
                         ),
-                        leading: Icon(IconData(0xe60e,
-                            fontFamily: 'MyIcons'),color: Colors.indigo),
-                        onLongPress: () => longTouchSave("tahajjud"),
-                        onTap: () => touchSave("tahajjud"),
-                      ),),
+                      ),
                       SizedBox(height: 20),
                     ],
                   )
@@ -464,3 +478,4 @@ class BottomBar extends StatelessWidget {
     );
   }
 }
+

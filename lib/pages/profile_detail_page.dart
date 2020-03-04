@@ -1,9 +1,44 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:prayer_imes/generated/i18n.dart';
 import 'package:prayer_imes/pages/compass.dart';
 import 'package:prayer_imes/pages/my_calendar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class ProfileDetail extends StatelessWidget {
+import '../change_local_izations.dart';
+import '../free_loca_lizations.dart';
+import '../main.dart';
+import '../tools.dart';
+import 'current_time_page.dart';
+
+class ProfilePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return FreeLocalizations(
+      child: ProfileDetailpage(),
+    );
+  }
+}
+
+class ProfileDetailpage extends StatefulWidget {
+  @override
+  _ProfileDetailpageState createState() => _ProfileDetailpageState();
+}
+
+class _ProfileDetailpageState extends State<ProfileDetailpage> {
+  _setCurrentDeviceLocale(Locale deviceLocale) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('languageCode', deviceLocale.languageCode);
+    prefs.setString('countryCode', deviceLocale.countryCode);
+
+    eventBus.fire(deviceLocale);
+//    Navigator.of(context).pop();
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => MyApp()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return new ListView(
@@ -25,14 +60,12 @@ class ProfileDetail extends StatelessWidget {
                       width: 100.0,
                       height: 100.0,
                       decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          border: Border.all(
-                            color: Colors.red
-                          ),
-                          borderRadius: new BorderRadius.circular(5.0),
-                          image: DecorationImage(
-                            image: AssetImage('assets/image/user/man.png'),
-                          ),
+                        shape: BoxShape.rectangle,
+                        border: Border.all(color: Colors.red),
+                        borderRadius: new BorderRadius.circular(5.0),
+                        image: DecorationImage(
+                          image: AssetImage('assets/image/user/man.png'),
+                        ),
                       ),
                     ),
                   )),
@@ -54,12 +87,10 @@ class ProfileDetail extends StatelessWidget {
                                 children: <Widget>[
                                   Padding(
                                     padding: const EdgeInsets.only(right: 8.0),
-                                    child: new Icon(
-                                      Icons.local_offer,
-                                      color: Colors.white,
-                                    ),
+                                    child: new Icon(IconData(0xe604,
+                                        fontFamily: 'MyIcons'),color: Colors.blueGrey),
                                   ),
-                                  new Text('Classified',
+                                  new Text('Quran',
                                       style: new TextStyle(color: Colors.white))
                                 ],
                               ),
@@ -79,12 +110,10 @@ class ProfileDetail extends StatelessWidget {
                                 children: <Widget>[
                                   Padding(
                                     padding: const EdgeInsets.only(right: 8.0),
-                                    child: new Icon(
-                                      Icons.beenhere,
-                                      color: Colors.white,
-                                    ),
+                                    child: new Icon(IconData(0xe605,
+                                        fontFamily: 'MyIcons'),color: Colors.white,),
                                   ),
-                                  new Text('Service',
+                                  new Text('Hadis',
                                       style: new TextStyle(color: Colors.white))
                                 ],
                               ),
@@ -239,14 +268,32 @@ class ProfileDetail extends StatelessWidget {
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(5.0)),
-                child: ListTile(
-                  title: Text("setting"),
-                  leading: new Icon(
-                    Icons.settings,
-                    color: Colors.black,
-                  ),
-                  onTap: () => {},
-                ),
+                child: Column(
+                  children: <Widget>[
+                    FlatButton(
+                        onPressed: () {
+                          _setCurrentDeviceLocale(Locale("en", ""));
+                        },
+                        child: Text(S.of(context).app_en)),
+                    FlatButton(
+                        onPressed: () {
+                          _setCurrentDeviceLocale(Locale("zh", "CN"));
+
+                        },
+                        child: Text(S.of(context).app_cn)),
+                    FlatButton(
+                        onPressed: () {
+                          Navigator.of(context).pop(); //  跟随系统
+                        },
+                        child: Text(S.of(context).app_auto))
+                  ],
+                )
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 16.0),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(5.0)),
               ),
               new SizedBox(
                 height: 15.0,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../change_local_izations.dart';
 import 'article_page.dart';
 import 'compoments/PNetworkImage.dart';
 
@@ -47,6 +48,15 @@ final List<Map> articles = [
 ];
 
 class InfoPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ChangeLocalizationsStatus(
+      child: InfoDetailPage(),
+    );
+  }
+}
+
+class InfoDetailPage extends StatelessWidget {
   final Color primaryColor = Color(0xffFD6592);
   final Color bgColor = Color(0xff6B8E23);
   final Color secondaryColor = Color(0xff324558);
