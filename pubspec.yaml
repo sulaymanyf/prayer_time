@@ -78,10 +78,16 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   assets:
+    - assets/image/boot/onboarding0.png
+    - assets/image/boot/onboarding1.png
+    - assets/image/boot/onboarding2.png
     - assets/image/compass/compass.svg
     - assets/image/compass/needle.svg
     - assets/image/user/man.png
   fonts:
+    - family: CM Sans Serif
+      fonts:
+        - asset: assets/fonts/cm_sans_serif_2012.ttf
     - family: AbrilFatface
       fonts:
         - asset: assets/fonts/AgaMashqV2Mshq-3mdX.ttf
